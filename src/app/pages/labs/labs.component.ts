@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,5 +13,37 @@ export class LabsComponent {
   title = 'todoapp';
   welcome ="Holiwis"
   heroes = ["Ironman","Cap","Thor","Hulk","Black widow","Hawk eye"];
+  private secreto ="33"
+  usuario ={
+    Nombre:"Juan Camilo",
+    Apellido:"Salazar Serna"
+  }
+  calculo(){
+    console.log(1+3);
+    return 1+3;
+  }
+
+  imgSrc="https://rtvc-assets-radionica3.s3.amazonaws.com/s3fs-public/styles/1200x630/public/2024-05/The_Acolyte.webp?itok=Qzj3rkbT";
+
+  changeHandler(event:Event){
+    console.log(event);
+  }
+
+  keyupHandler(event:KeyboardEvent){
+    const input = event.target as HTMLInputElement;
+    console.log(input.value);
+  }
+
+  //signals
+  signalvar = signal("holi");
+  changeSignal(event:Event){
+    const input = event.target as HTMLInputElement;
+    const newvalue = input.value;
+    this.signalvar.set(newvalue);
+    console.log(event);
+  }
+
+
+
 
 }

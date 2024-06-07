@@ -3,3 +3,44 @@
 <ul>
   <li *ngFor="let hero of heroes">{{hero}}</li>
 </ul>
+<h2>{{("hola".repeat(10))}} {{3+3}}</h2>
+
+<h2>{{welcome==title?"true":"false"}}</h2>
+
+<h2>{{usuario.Nombre}}</h2>
+
+
+<!--
+<h2>{{calculo()}}</h2>
+-->
+
+<hr>
+
+<h2>{{title}}</h2>
+
+<input type="text"  [value]="title" name="" id="">
+
+<hr>
+
+<!--
+<img [src]="imgSrc" [alt]="usuario.Nombre">
+-->
+
+<hr>
+
+<button (click)="calculo()">Click me</button>
+<br>
+<button (dblclick)="calculo()">Double Click me</button>
+<br>
+<input type="text"  (change)="changeHandler($event)">
+<p>(keyup)</p>
+<input type="text"  (keyup)="keyupHandler($event)">
+<p>(Keydown shift t)</p>
+<input type="text"  (keydown.shift.t)="changeHandler($event)">
+
+<hr>
+<h2>Signal</h2>
+<br>
+<p>signal: {{signalvar()}} </p>
+<br>
+<input type="text"  [value]="signalvar()" (keyup)="changeSignal($event)">
