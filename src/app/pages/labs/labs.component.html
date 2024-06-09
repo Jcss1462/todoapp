@@ -1,134 +1,149 @@
 <H1>Mi primer proyecto</H1>
 <h2>{{welcome}}</h2>
 <hr>
-<ul>
-  (vieja sintaxis)
-  <li *ngFor="let hero of heroes()">{{hero}}</li>
+  <ul>
+    (vieja sintaxis)
+    @for (hero of heroes(); track hero) {
+      <li>{{hero}}</li>
+    }
 
-  (nueva sintaxis)
-  @for(hero of heroes(); track hero; let i = $index){
-    <li>{{i}}:{{hero}}</li>
-  }@empty {
-    <li>lista vacia</li>
-  }
-</ul>
-<hr>
-<h2>{{("hola".repeat(10))}} {{3+3}}</h2>
+    (nueva sintaxis)
+    @for(hero of heroes(); track hero; let i = $index){
+      <li>{{i}}:{{hero}}</li>
+      }@empty {
+      <li>lista vacia</li>
+    }
+  </ul>
+  <hr>
+    <h2>{{("hola".repeat(10))}} {{3+3}}</h2>
 
-<h2>{{welcome==title?"true":"false"}}</h2>
+    <h2>{{welcome==title?"true":"false"}}</h2>
 
-<h2>{{usuario().Nombre}}</h2>
-<h2>{{usuario().Apellido}}</h2>
-
-
-<!--
-<h2>{{calculo()}}</h2>
--->
-
-<hr>
-
-<h2>{{title}}</h2>
-
-<input type="text"  [value]="title" name="" id="">
-
-<hr>
-
-<!--
-<img [src]="imgSrc" [alt]="usuario.Nombre">
--->
-
-<hr>
-
-<button (click)="calculo()">Click me</button>
-<br>
-<button (dblclick)="calculo()">Double Click me</button>
-<br>
-<input type="text"  (change)="changeHandler($event)">
-<p>(keyup)</p>
-<input type="text"  (keyup)="keyupHandler($event)">
-<p>(Keydown shift t)</p>
-<input type="text"  (keydown.shift.t)="changeHandler($event)">
-
-<hr>
-<h2>Signal</h2>
-<br>
-<p>signal: {{signalvar()}} </p>
-<br>
-<input type="text"  [value]="signalvar()" (keyup)="changeSignal($event)">
-<br>
-<p>Heroes totlaes: {{heroes().length}}</p>
-<ul>
-  <li *ngFor="let hero of heroes(); index as i">{{i}} | {{hero}}</li>
-</ul>
-
-<hr>
-(vieja sintaxis)
-<P *ngIf="signalvar() === 'holi'; else noMeVesBlock">
-    Me ves
-</P>
-
-<ng-template #noMeVesBlock>
-  no me ves
-</ng-template>
-
-(nueva sintaxis)
-@if (signalvar() === "holi") {
-  <p>Me ves</p>
-} @else {
-  <p>no me ves</p>
-}
-
-<hr>
-
-<P *ngIf="usuario().Nombre === 'Juan Camilo' && usuario().Apellido === 'Salazar Serna'">
-  mi nombre empieza por J y termina con s
-</P>
-
-<hr>
-(ngSwitch-vieja sintaxis)
-<div [ngSwitch]="signalvar()">
-  <P *ngSwitchCase="'Juan'"> Hola soy Juan</P>
-  <P *ngSwitchCase="'holi'"> Hola soy holi</P>
-  <P *ngSwitchDefault >No soy nadie</P>
-</div>
-
-(ngSwitch-nueva sintaxis)
-<div>
-@switch (signalvar()) {
-  @case ('Juan') {<p> Hola soy Juan</p>}
-  @case ('holi') {<p> Hola soy holi</p>}
-  @default() {<p> No soy nadie</p>}
-}
-</div>
-<hr>
-
-<input type="color" [formControl] = "colorCtrl">
-<p>color: {{colorCtrl.value}}</p>
-
-<svg>
-  <g>
-    <rect x="0" y ="0" width="100" height ="100" [attr.fill]="colorCtrl.value"></rect>
-  </g>
-</svg>
+    <h2>{{usuario().Nombre}}</h2>
+    <h2>{{usuario().Apellido}}</h2>
 
 
-<hr>
+    <!--
+    <h2>{{calculo()}}</h2>
+    -->
+
+    <hr>
+
+      <h2>{{title}}</h2>
+
+      <input type="text"  [value]="title" name="" id="">
+
+      <hr>
+
+        <!--
+        <img [src]="imgSrc" [alt]="usuario.Nombre">
+        -->
+
+        <hr>
+
+          <button (click)="calculo()">Click me</button>
+          <br>
+            <button (dblclick)="calculo()">Double Click me</button>
+            <br>
+              <input type="text"  (change)="changeHandler($event)">
+              <p>(keyup)</p>
+              <input type="text"  (keyup)="keyupHandler($event)">
+              <p>(Keydown shift t)</p>
+              <input type="text"  (keydown.shift.t)="changeHandler($event)">
+
+              <hr>
+                <h2>Signal</h2>
+                <br>
+                  <p>signal: {{signalvar()}} </p>
+                  <br>
+                    <input type="text"  [value]="signalvar()" (keyup)="changeSignal($event)">
+                    <br>
+                      <p>Heroes totlaes: {{heroes().length}}</p>
+                      <ul>
+                        @for (hero of heroes(); track hero; let i = $index) {
+                          <li>{{i}} | {{hero}}</li>
+                        }
+                      </ul>
+
+                      <hr>
+                        (vieja sintaxis)
+                        @if (signalvar() === 'holi') {
+                          <P>
+                          Me ves
+                        </P>
+                      } @else {
+                        no me ves
+                      }
 
 
-<input type="number" [formControl] = "widthCtrl">
-<span class="box" [style.width.px]="widthCtrl.value"></span>
+                      (nueva sintaxis)
+                      @if (signalvar() === "holi") {
+                        <p>Me ves</p>
+                      } @else {
+                        <p>no me ves</p>
+                      }
 
-<hr>
+                      <hr>
 
-<p>
-  <input type="text" [formControl] = "nameCtrl"><br>
-  <span class="message-error" [class.show]="nameCtrl.invalid && nameCtrl.touched">Nombre Invalido</span>
-</p>
+                        @if (usuario().Nombre === 'Juan Camilo' && usuario().Apellido === 'Salazar Serna') {
+                          <P>
+                          mi nombre empieza por J y termina con s
+                        </P>
+                      }
+
+                      <hr>
+                        (ngSwitch-vieja sintaxis)
+                        <div>
+                          @switch (signalvar()) {
+                            @case ('Juan') {
+                              <P> Hola soy Juan</P>
+                            }
+                            @case ('holi') {
+                              <P> Hola soy holi</P>
+                            }
+                            @default {
+                              <P >No soy nadie</P>
+                            }
+                          }
+                        </div>
+
+                        (ngSwitch-nueva sintaxis)
+                        <div>
+                          @switch (signalvar()) {
+                            @case ('Juan') {<p> Hola soy Juan</p>}
+                            @case ('holi') {<p> Hola soy holi</p>}
+                            @default() {<p> No soy nadie</p>}
+                          }
+                        </div>
+                        <hr>
+
+                          <input type="color" [formControl] = "colorCtrl">
+                          <p>color: {{colorCtrl.value}}</p>
+
+                          <svg>
+                            <g>
+                              <rect x="0" y ="0" width="100" height ="100" [attr.fill]="colorCtrl.value"></rect>
+                            </g>
+                          </svg>
 
 
-<p>
-  <input type="text">
-</p>
+                          <hr>
+
+
+                            <input type="number" [formControl] = "widthCtrl">
+                            <span class="box" [style.width.px]="widthCtrl.value"></span>
+
+                            <hr>
+
+                              <p>
+                                <input type="text" [formControl] = "nameCtrl"><br>
+                                <span class="message-error" [class.show]="nameCtrl.invalid && nameCtrl.touched">Nombre Invalido</span>
+                              </p>
+
+
+                              <p>
+                                <input type="text">
+                              </p>
 
 
 
