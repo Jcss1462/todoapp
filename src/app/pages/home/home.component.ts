@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, Inject, Injector, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from './../../models/task.model';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,18 +13,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 })
 export class HomeComponent {
 
-  tasks = signal<Task[]>([
-   {
-    id: Date.now(),
-    title: "Crear Proyecto",
-    completed: true
-  },
-  {
-    id: Date.now(),
-    title: "Registrar Producto",
-    completed: false
-  },
-  ]);
+  tasks = signal<Task[]>([ ]);
 
  
   deleteTask(index: number){
@@ -64,17 +53,92 @@ export class HomeComponent {
   }
 
   changeHandler(){
-
     if(this.neweRTaskCtrl.valid){
-      const value = this.neweRTaskCtrl.value
+      const value = this.neweRTaskCtrl.value.trim();
 
-      if(value.trim()!==""){
+      if(value!==""){
         this.addTask(value);
         this.neweRTaskCtrl.setValue("");
       }
       
     }
-   
+  }
+
+
+  editTaskCtrl = new FormControl('',{
+    nonNullable:true,
+    validators:[
+      Validators.required,
+      Validators.minLength(3)
+    ]
+  })
+
+  updateTaskEditingMode(index:number){
+
+    this.tasks.update((task)=> task.map((item, i) => 
+      index === i ? { ...item, editing: true} : {...item, editing:false}
+    ));
+
+    let originalItem =this.tasks().filter((item,position)=> position === index?item:"")[0];
+    this.editTaskCtrl.setValue(originalItem.title);
+
+  }
+
+  saveEdit(index:number){
+
+    this.tasks.update((task)=> task.map((item, i) => 
+      index === i ? { ...item, editing: false , title: this.editTaskCtrl.value.trim()}:item 
+    ));
+    this.editTaskCtrl.setValue("");
+  }
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  //estados compuestos
+  filter = signal<"all" | "pending" | "completed">("all");
+  taskByFilter = computed(()=>{
+
+    console.log("run computed");
+    const filter = this.filter();
+    const tasks = this.tasks()
+    
+    if(filter ==="pending"){
+      return tasks.filter(task => !task.completed);
+    }
+
+    if(filter ==="completed"){
+      return tasks.filter(task => task.completed);
+    }
+
+    return tasks;
+
+
+  });
+
+  chnageFilter(filter: "all" | "pending" | "completed"){
+
+    this.filter.set(filter);
+
+  }
+
+  injector =inject(Injector);
+
+  trackEffect(){
+    effect(()=>{
+      const tasks = this.tasks();
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    },{injector:this.injector});
+  }
+  ngOnInit(){
+
+    const storage=localStorage.getItem("tasks")
+
+    if(storage){
+      const tasks= JSON.parse(storage);
+      this.tasks.set(tasks);
+    }
+  
+    this.trackEffect();
   }
 
 }
